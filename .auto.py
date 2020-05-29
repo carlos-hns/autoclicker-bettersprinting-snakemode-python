@@ -108,8 +108,19 @@ class Runner(threading.Thread):
             keyboard.release(Key.ctrl_l)
             time.sleep(1)
 
-# Starting APP
+# Draw Screen Console
+def drawScreen():
 
+    print("\n"*140)
+    print("MADE BY: carlos-hns".center(90))
+    print("AutoClicker: {}".format("[Ativado]" if click_thread.running else ["Desativado"]).center(89))
+    print("Snake Mode: {}".format("[Ativado]" if snack_thread.running else ["Desativado"]).center(89))
+    print("Run Mode: {}".format("[Ativado]" if run_thread.running else ["Desativado"]).center(89))
+    
+    print("\n"*5)
+
+
+# Starting APP
 mouse = Controller()
 keyboard = KeyboardController()
 
@@ -121,6 +132,8 @@ snack_thread.start()
 
 run_thread = Runner()
 run_thread.start()
+
+drawScreen()
 
 # Setting Keyboard Listener
 
@@ -155,6 +168,8 @@ def execute():
         run_thread.exit()
         listener.stop()
 
+    drawScreen()
+
 def on_press(key):
     if any([key in COMBO for COMBO in COMBINATIONS]):
         current.add(key)
@@ -176,3 +191,4 @@ def on_release(key):
 
 with Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
+
