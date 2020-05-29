@@ -4,7 +4,7 @@ import threading
 from pynput.mouse import Button, Controller
 from pynput.keyboard import Listener, KeyCode, Key, Controller as KeyboardController
 
-# Configurações
+# Configs AutoClicker
 delay = 0.06
 button = Button.left
 
@@ -41,11 +41,9 @@ class ClickMouse(threading.Thread):
         self.program_running = True
 
     def start_clicking(self):
-        #print("Iniciando clicks...")
         self.running = True
 
     def stop_clicking(self):
-        #print("Parando clicks...")
         self.running = False
 
     def exit(self):
@@ -60,18 +58,16 @@ class ClickMouse(threading.Thread):
             time.sleep(0.1)
 
 
-class Snake(threading.Thread):
+class Snaker(threading.Thread):
     def __init__(self):
-        super(Snake, self).__init__()
+        super(Snaker, self).__init__()
         self.running = False
         self.program_running = True
 
     def start_snaking(self):
-        #print("Iniciando modo Snake...")
         self.running = True
 
     def stop_snaking(self):
-        #print("Parando modo Snake...")
         self.running = False
 
     def exit(self):
@@ -81,30 +77,22 @@ class Snake(threading.Thread):
     def run(self):
         while self.program_running:
             while self.running:
-                print("Rodando o snake {}".format(current))
-
-                print(keyboard.press(Key.shift_l))
-
-                #time.sleep(0.5)
-            #time.sleep(0.5)
-            print(keyboard.release("G"))
-            print(keyboard.release(Key.shift_l))
-            print("Rodando o programa {}".format(current))
+                keyboard.press(Key.shift_l)
+                
+            keyboard.release("G")
+            keyboard.release(Key.shift_l)
             time.sleep(1)
 
-"""
-class Snake(threading.Thread):
+class Runner(threading.Thread):
     def __init__(self):
-        super(Snake, self).__init__()
+        super(Runner, self).__init__()
         self.running = False
         self.program_running = True
 
     def start_snaking(self):
-        print("Iniciando modo Snake...")
         self.running = True
 
     def stop_snaking(self):
-        print("Parando modo Snake...")
         self.running = False
 
     def exit(self):
@@ -113,41 +101,14 @@ class Snake(threading.Thread):
 
     def run(self):
         while self.program_running:
-            firstTime = True
             while self.running:
-                if firstTime:
-                    try:
-                        keyboard.release(Key.ctrl)
-                        keyboard.release(Key.shift)
-                        keyboard.release('g')
-                        keyboard.press(Key.shift)
-                        keyboard.press('a')
-                    except:
-                        keyboard.press(Key.shift)
-                        keyboard.press('a')
-                    print("to preso")
+                keyboard.press(Key.ctrl_l)
+                
+            keyboard.release("F")
+            keyboard.release(Key.ctrl_l)
+            time.sleep(1)
 
-                # Fora do IF
-                keyboard.press('a')
-                print("teste")
-                #print("To rodando...")
-                print(current)
-                # Fora do While
-                try:
-                    keyboard.release(Key.ctrl)
-                    keyboard.release(Key.shift)
-                    keyboard.release('g')
-                except:
-                    pass
-            try:
-                keyboard.release(Key.ctrl)
-                keyboard.release(Key.shift)
-                keyboard.release('g')
-            except:
-                pass
-            time.sleep(0.1)
-
-"""
+# Starting APP
 
 mouse = Controller()
 keyboard = KeyboardController()
@@ -155,14 +116,17 @@ keyboard = KeyboardController()
 click_thread = ClickMouse(delay, button)
 click_thread.start()
 
-
-snack_thread = Snake()
+snack_thread = Snaker()
 snack_thread.start()
 
-def execute():
+run_thread = Runner()
+run_thread.start()
 
-    # 0 == Não possui diferença
-    # 1 > Possui diferença
+# Setting Keyboard Listener
+
+def execute():
+    # 0 == don't has difference
+    # 1 > has difference
 
     hasDifference = 0
     pressedHotKeyValues = []
@@ -175,27 +139,22 @@ def execute():
             click_thread.stop_clicking()
         else:
             click_thread.start_clicking()
+    elif (pressedHotKeyValues[2] == hasDifference or pressedHotKeyValues[3] == hasDifference):
+        if run_thread.running:
+            run_thread.stop_snaking()
+        else:
+            run_thread.start_snaking()
     elif (pressedHotKeyValues[4] == hasDifference or pressedHotKeyValues[5] == hasDifference):
         if snack_thread.running:
             snack_thread.stop_snaking()
         else:
             snack_thread.start_snaking()
-
-
-    
-    """
-    elif (pressedHotKeyValues[4] == hasDifference or pressedHotKeyValues[5] == hasDifference):
-        if snack_thread.running:
-            snack_thread.stop_snaking()
-        else:
-            snack_thread.start_snaking()
-    """
-    """
     elif (pressedHotKeyValues[6] == hasDifference or pressedHotKeyValues[7] == hasDifference):
         click_thread.exit()
-        moviment_thread.exit()
+        snack_thread.exit()
+        run_thread.exit()
         listener.stop()
-    """
+
 def on_press(key):
     if any([key in COMBO for COMBO in COMBINATIONS]):
         current.add(key)
