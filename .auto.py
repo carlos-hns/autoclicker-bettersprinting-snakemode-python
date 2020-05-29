@@ -41,11 +41,11 @@ class ClickMouse(threading.Thread):
         self.program_running = True
 
     def start_clicking(self):
-        print("Iniciando clicks...")
+        #print("Iniciando clicks...")
         self.running = True
 
     def stop_clicking(self):
-        print("Parando clicks...")
+        #print("Parando clicks...")
         self.running = False
 
     def exit(self):
@@ -59,6 +59,40 @@ class ClickMouse(threading.Thread):
                 time.sleep(self.delay)  
             time.sleep(0.1)
 
+
+class Snake(threading.Thread):
+    def __init__(self):
+        super(Snake, self).__init__()
+        self.running = False
+        self.program_running = True
+
+    def start_snaking(self):
+        #print("Iniciando modo Snake...")
+        self.running = True
+
+    def stop_snaking(self):
+        #print("Parando modo Snake...")
+        self.running = False
+
+    def exit(self):
+        self.stop_snaking()
+        self.program_running = False
+
+    def run(self):
+        while self.program_running:
+            while self.running:
+                print("Rodando o snake {}".format(current))
+
+                print(keyboard.press(Key.shift_l))
+
+                #time.sleep(0.5)
+            #time.sleep(0.5)
+            print(keyboard.release("G"))
+            print(keyboard.release(Key.shift_l))
+            print("Rodando o programa {}".format(current))
+            time.sleep(1)
+
+"""
 class Snake(threading.Thread):
     def __init__(self):
         super(Snake, self).__init__()
@@ -113,12 +147,14 @@ class Snake(threading.Thread):
                 pass
             time.sleep(0.1)
 
+"""
 
 mouse = Controller()
 keyboard = KeyboardController()
 
 click_thread = ClickMouse(delay, button)
 click_thread.start()
+
 
 snack_thread = Snake()
 snack_thread.start()
@@ -144,6 +180,16 @@ def execute():
             snack_thread.stop_snaking()
         else:
             snack_thread.start_snaking()
+
+
+    
+    """
+    elif (pressedHotKeyValues[4] == hasDifference or pressedHotKeyValues[5] == hasDifference):
+        if snack_thread.running:
+            snack_thread.stop_snaking()
+        else:
+            snack_thread.start_snaking()
+    """
     """
     elif (pressedHotKeyValues[6] == hasDifference or pressedHotKeyValues[7] == hasDifference):
         click_thread.exit()
@@ -158,10 +204,16 @@ def on_press(key):
 
 def on_release(key):
     if any([key in COMBO for COMBO in COMBINATIONS]):
-        try:
-            current.remove(key)    
-        except erro:
-            print(erro)
+        
+        # De alguma forma esse método de exclusão
+        # deixava um item dentro do set, por isso em cada função
+        # é necessario remove-lo...
+
+        #print("Debugando {}".format(current))
+        #print("Tecla: {}".format(key))
+        
+        if key in current:
+            current.remove(key)
 
 with Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
