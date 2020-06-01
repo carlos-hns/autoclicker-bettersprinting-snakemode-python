@@ -71,7 +71,7 @@ Released in 2020.
 This project is under the [MIT license](https://github.com/carlos-hns/autoclicker-bettersprinting-snakemode-python/blob/master/LICENSE).
 
 <br>
-<p align="center"><img src=".github/logo-vhenrique.png" width=150></p>
+<p align="left"><img src=".github/logo-vhenrique.png" width=150></p>
 
 
 <br>
