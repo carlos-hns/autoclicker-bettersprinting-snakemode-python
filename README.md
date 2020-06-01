@@ -1,5 +1,3 @@
-<p align="center"><img src=".github/logo-vhenrique.png" width=150></p>
-
 # A Simple Script for Minecraft
 
 [![Author](https://img.shields.io/badge/author-Carlos%20Henrique-blue?style=flat-square)](https://github.com/carlos-hns)
@@ -72,4 +70,10 @@ Here we are! The script is working :3
 Released in 2020.
 This project is under the [MIT license](https://github.com/carlos-hns/autoclicker-bettersprinting-snakemode-python/blob/master/LICENSE).
 
-Made with love by [Carlos Henrique](https://github.com/LauraBeatris) 🐼🖤
+<br>
+<p align="center"><img src=".github/logo-vhenrique.png" width=150></p>
+
+
+<br>
+
+Made with love by [Carlos Henrique](https://github.com/carlos-hns) 🐼🖤
